@@ -1,0 +1,30 @@
+{
+  "name": "IBurn's Logging Library",
+  "description": "A Logging utility capable of formatting error output with stack traces, exception logging separately, fatal error handling and runtime log file swapping",
+  "version": "2.0.1",
+  "type": "library",
+  "keywords": [
+    "Log",
+    "Logging"
+  ],
+  "homepage": "https://github.com/IBurn36360/Logger",
+  "time": "2015-11-15 01:30:00",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Anthony D. Diaz",
+      "email": "iburn36360@gmail.com",
+      "homepage": "https://areqgaming.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/IBurn36360/Logger/issues",
+    "docs": "https://github.com/IBurn36360/Logger/"
+  },
+  "autoload": {
+    "psr-4": {
+      "IBurn36360\\Logger\\" : "src/"
+    }
+  }
+}
