@@ -1,5 +1,5 @@
 {
-  "name": "IBurn's Logging Library",
+  "name": "IBurn36360/Logger",
   "description": "A Logging utility capable of formatting error output with stack traces, exception logging separately, fatal error handling and runtime log file swapping",
   "version": "2.0.1",
   "type": "library",
