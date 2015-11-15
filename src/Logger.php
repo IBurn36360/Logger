@@ -1,6 +1,6 @@
 <?php
 
-namespace \IBurn36360\Logger;
+namespace IBurn36360\Logger;
 
 /**
  * Logger library, used to capture any and all errors and warnings from a scripts execution
@@ -159,7 +159,9 @@ final class Logger {
         if ($newLogFile) {
             @fclose($this->handle);
             
-            $this->createLoggingDirectory(realpath($newLogFile));
+            $this->basePath = realpath($logFile);
+            
+            $this->createLoggingDirectory($this->basePath);
             
             if (file_exists($newLogFile)) {
                 $this->handle = fopen($newLogFile, 'a');
