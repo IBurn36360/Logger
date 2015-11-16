@@ -1,6 +1,6 @@
 # IBurn36360\Logger
 
-A simple logging utility used to capture all PHP related issues in a formatted manner and keep them out of page output
+A simple logging utility used to capture all PHP related issues in a formatted manner and keep them out of page output.
 
 ## License
 
@@ -22,16 +22,16 @@ limitations under the License.
 
 ## Usage
 
-Using this logger is fairly simple.  Creating an instance of the logger will register the handlers, create the logging direcotry (Recursively and with permissions 775 to account for different hosting setups) and make the initial logging file.  If a logging file exists already it will reopen it in append mode
+Using this logger is fairly simple.  Creating an instance of the logger will create the logging direcotry (Recursively and with permissions 775 to account for different hosting setups) and make the initial logging file.  If a logging file exists already it will reopen it in append mode.
 
 ```php
-$logger = new \IBurn36360\Logger\Logger(__DIR__ . '/logs/init_log.php);
+$logger = new \IBurn36360\Logger\Logger(__DIR__ . '/logs/init_log.php');
 // This step is required if you want this logger to take over the complete error handling PHP has natively.
-// I left this as an option so that you can use anothe rlogger along side this one.
+// I left this as an option so that you can use another logger along side this one.
 $logger->registerErrorHandlers();
 ```
 
-Log files should end with .php so that they are execute instead of read.  Log files are created with ```<?php exit; ?>``` as the first line to prevent them from being readable in native HTTP environments
+Log files should end with .php so that they are execute instead of read.  Log files are created with ```<?php exit; ?>``` as the first line to prevent them from being readable in most environments.
 
 ## Writing to the log
 
@@ -66,7 +66,7 @@ Custom logging can be achieved by calling into the logCustomLine function
 $logger->logCustomLine('Log entry');
 ```
 
-Every cusom log entry is spaced out as if it has no log type, omitting that part of the log.  Every custom log entry is written as-is and always includes a timestamp.
+Every custom log entry is spaced out as if it has no log type, omitting that part of the log.  Every custom log entry is written as-is and always includes a timestamp.
 
 ## Updating the log file
 
