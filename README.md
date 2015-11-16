@@ -1,7 +1,5 @@
 # IBurn36360\Logger
 
-```NOTE:I'm still making sure the PRS-4 autoloading is working properly.  Once I confirm that and it is running like that on my site, I will remove this warning.  Until this is gone, assume that the library may not work.```
-
 A simple logging utility used to capture all PHP related issues in a formatted manner and keep them out of page output
 
 ## License
@@ -28,6 +26,9 @@ Using this logger is fairly simple.  Creating an instance of the logger will reg
 
 ```php
 $logger = new \IBurn36360\Logger\Logger(__DIR__ . '/logs/init_log.php);
+// This step is required if you want this logger to take over the complete error handling PHP has natively.
+// I left this as an option so that you can use anothe rlogger along side this one.
+$logger->registerErrorHandlers();
 ```
 
 Log files should end with .php so that they are execute instead of read.  Log files are created with ```<?php exit; ?>``` as the first line to prevent them from being readable in native HTTP environments
