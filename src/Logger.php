@@ -145,7 +145,7 @@ final class Logger {
         register_shutdown_function(array($this, 'siteFatalCrashHandler'));
         
         // Set error reporting to the specified level, defaults to E_ALL
-        error_reporting($this->reportingLevel);
+        error_reporting($this->errorLevel);
     }
     
     /**
