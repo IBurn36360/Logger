@@ -60,15 +60,17 @@ final class Logger {
      * @return 
      */
     public function __construct($logFile) {
-        $this->basePath = realpath($logFile);
+        $this->file = $logFile;
+        $this->basePath = realpath(dirname($logFile));
         
+        // Make the logging dir
         $this->createLoggingDirectory($this->basePath);
         
         // does our log file exist?
-        if (file_exists($logFile)) {
-            $this->handle = fopen($logFile, 'a');
+        if (file_exists($this->file)) {
+            $this->handle = fopen($this->file, 'a');
         } else {
-            $this->handle = fopen($logFile, 'w');
+            $this->handle = fopen($this->file, 'w');
             fwrite($this->handle, '<?php exit; ?>');
         }
         
@@ -101,7 +103,7 @@ final class Logger {
         
         // Don't throw notices, but still have them logged
         if ($errNo != E_NOTICE) {
-            throw new ErrorException($errStr, 0, $errNo, $file, $line);
+            throw new \ErrorException($errStr, 0, $errNo, $file, $line);
         }
     }
     
@@ -111,8 +113,7 @@ final class Logger {
      * @access public
      */
     public function siteExceptionHandler($exception) {
-        $this->updateLogFile((($this->basePath == null) ? __DIR__ . '/../../logs/' : $this->basePath) . 
-            'uncaught_exception_log.php');
+        $this->updateLogFile('uncaught_exception_log.php');
         
         $this->logException($exception);
     }
@@ -123,8 +124,7 @@ final class Logger {
      * @access public
      */
     public function siteFatalCrashHandler() {
-        $this->updateLogFile((($this->basePath == null) ? __DIR__ . '/../../logs/' : $this->basePath) . 
-            '/fatal_log.php');
+        $this->updateLogFile('fatal_log.php');
         
         $err = error_get_last();
         
@@ -151,7 +151,7 @@ final class Logger {
     /**
      * Updates what log file is currently being used
      * 
-     * @param $newLogFile[string] - The fullpath to the new log file
+     * @param $newLogFile[string] - The name of the new log file, created in the current directory
      * 
      * @access public
      */
@@ -159,14 +159,12 @@ final class Logger {
         if ($newLogFile) {
             @fclose($this->handle);
             
-            $this->basePath = realpath($logFile);
+            $this->file = $this->basePath . '/' . $newLogFile;
             
-            $this->createLoggingDirectory($this->basePath);
-            
-            if (file_exists($newLogFile)) {
-                $this->handle = fopen($newLogFile, 'a');
+            if (file_exists($this->file)) {
+                $this->handle = fopen($this->file, 'a');
             } else {
-                $this->handle = fopen($newLogFile, 'w');
+                $this->handle = fopen($this->file, 'w');
                 fwrite($this->handle, '<?php exit; ?>');
             }
         }
@@ -177,12 +175,10 @@ final class Logger {
     /**
      * Creates the logging directory recursively
      * 
-     * @param string|$path - The fullpath to the log file
-     * 
      * @access public
      */
-    private function createLoggingDirectory($path = '') {
-        $parts       = explode(DIRECTORY_SEPARATOR , $path);
+    private function createLoggingDirectory() {
+        $parts       = explode(DIRECTORY_SEPARATOR , $this->basePath);
         $currentPath = ((PHP_OS == 'WINNT') ? '' : DIRECTORY_SEPARATOR) . $parts[0];
         
         array_shift($parts);
@@ -195,6 +191,8 @@ final class Logger {
                 mkdir($currentPath . DIRECTORY_SEPARATOR, 0775, false);
             }
         }
+        
+        return $this;
     }
     
     /**
@@ -206,6 +204,8 @@ final class Logger {
      */
     private function writeLine($str) {
         @fwrite($this->handle, "\n" . str_replace("\r\n", ' ', $str));
+        
+        return $this;
     }
     
     /**
