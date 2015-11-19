@@ -73,5 +73,5 @@ Every custom log entry is spaced out as if it has no log type, omitting that par
 If you have any needs to update the log file, such as swapping from an initialition state log to an operation log (I do this), there is a function to also facilitate this.  It first closes the initial log file and opens up the new one, creating the path recursively if the path does not exist.
 
 ```php
-$logger->updateLogFile(__DIR__ . '/logs/test.com_log.php');
+$logger->updateLogFile('test.com_log.php');
 ```
